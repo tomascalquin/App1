@@ -70,3 +70,27 @@ Order* cargar_datos(int *size) {
     }
     return orders;
 }
+void generar_reporte(Order *orders, int size) {
+    printf("\n=== REPORTE DE VENTAS ===\n");
+    printf("1. Pizza más vendida: %s\n", pizza_mas_vendida(size, orders));
+    printf("2. Pizza menos vendida: %s\n", pizza_menos_vendida(size, orders));
+    printf("3. Mejor día en ventas: %s\n", fecha_mas_ventas_dinero(size, orders));
+    printf("4. Peor día en ventas: %s\n", fecha_menos_ventas_dinero(size, orders));
+    printf("5. Día con más pizzas: %s\n", fecha_mas_ventas_pizzas(size, orders));
+    printf("6. Día con menos pizzas: %s\n", fecha_menos_ventas_pizzas(size, orders));
+    printf("7. Promedio por orden: %s\n", promedio_pizzas_por_orden(size, orders));
+    printf("8. Promedio diario: %s\n", promedio_pizzas_por_dia(size, orders));
+    printf("9. Ingrediente estrella: %s\n", ingrediente_mas_vendido(size, orders));
+    printf("10. Distribución por categoría: %s\n\n", cantidad_pizzas_por_categoria(size, orders));
+}
+
+void contar_ingredientes(const char *ingredientes, int *contador) {
+    char buffer[MAX_STRING];
+    strncpy(buffer, ingredientes, MAX_STRING);
+    char *token = strtok(buffer, ",");
+
+    while (token != NULL) {
+        while (*token == ' ') token++;
+        if (*token) contador[(unsigned char)*token]++;
+        token = strtok(NULL, ",");
+    }
