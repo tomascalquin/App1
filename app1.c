@@ -94,3 +94,51 @@ void contar_ingredientes(const char *ingredientes, int *contador) {
         if (*token) contador[(unsigned char)*token]++;
         token = strtok(NULL, ",");
     }
+}
+
+char* pizza_mas_vendida(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int max_quantity = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (orders[i].quantity > max_quantity) {
+            max_quantity = orders[i].quantity;
+            strncpy(resultado, orders[i].pizza_name, MAX_STRING);
+        }
+    }
+    return resultado;
+}
+
+char* pizza_menos_vendida(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int min_quantity = INT_MAX;
+
+    for (int i = 0; i < size; i++) {
+        if (orders[i].quantity < min_quantity) {
+            min_quantity = orders[i].quantity;
+            strncpy(resultado, orders[i].pizza_name, MAX_STRING);
+        }
+    }
+    return resultado;
+}
+
+char* fecha_mas_ventas_dinero(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    float max_total = 0;
+    char best_date[MAX_STRING] = "";
+
+    for (int i = 0; i < size; i++) {
+        float sum = 0;
+        for (int j = 0; j < size; j++) {
+            if (strcmp(orders[i].order_date, orders[j].order_date) == 0) {
+                sum += orders[j].total_price;
+            }
+        }
+        if (sum > max_total) {
+            max_total = sum;
+            strncpy(best_date, orders[i].order_date, MAX_STRING);
+        }
+    }
+    snprintf(resultado, MAX_STRING, "%s (USD %.2f)", best_date, max_total);
+    return resultado;
+}
