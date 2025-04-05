@@ -142,3 +142,143 @@ char* fecha_mas_ventas_dinero(int size, Order *orders) {
     snprintf(resultado, MAX_STRING, "%s (USD %.2f)", best_date, max_total);
     return resultado;
 }
+char* fecha_menos_ventas_dinero(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    float min_total = FLT_MAX;
+    char worst_date[MAX_STRING] = "";
+
+    for (int i = 0; i < size; i++) {
+        float sum = 0;
+        for (int j = 0; j < size; j++) {
+            if (strcmp(orders[i].order_date, orders[j].order_date) == 0) {
+                sum += orders[j].total_price;
+            }
+        }
+        if (sum < min_total) {
+            min_total = sum;
+            strncpy(worst_date, orders[i].order_date, MAX_STRING);
+        }
+    }
+    snprintf(resultado, MAX_STRING, "%s (USD %.2f)", worst_date, min_total);
+    return resultado;
+}
+
+char* fecha_mas_ventas_pizzas(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int max_pizzas = 0;
+    char best_date[MAX_STRING] = "";
+
+    for (int i = 0; i < size; i++) {
+        int count = 0;
+        for (int j = 0; j < size; j++) {
+            if (strcmp(orders[i].order_date, orders[j].order_date) == 0) {
+                count += orders[j].quantity;
+            }
+        }
+        if (count > max_pizzas) {
+            max_pizzas = count;
+            strncpy(best_date, orders[i].order_date, MAX_STRING);
+        }
+    }
+    snprintf(resultado, MAX_STRING, "%s (%d pizzas)", best_date, max_pizzas);
+    return resultado;
+}
+
+char* fecha_menos_ventas_pizzas(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int min_pizzas = INT_MAX;
+    char worst_date[MAX_STRING] = "";
+
+    for (int i = 0; i < size; i++) {
+        int count = 0;
+        for (int j = 0; j < size; j++) {
+            if (strcmp(orders[i].order_date, orders[j].order_date) == 0) {
+                count += orders[j].quantity;
+            }
+        }
+        if (count < min_pizzas) {
+            min_pizzas = count;
+            strncpy(worst_date, orders[i].order_date, MAX_STRING);
+        }
+    }
+    snprintf(resultado, MAX_STRING, "%s (%d pizzas)", worst_date, min_pizzas);
+    return resultado;
+}
+
+char* promedio_pizzas_por_orden(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int total_pizzas = 0;
+    int unique_orders = 0;
+    int used_orders[MAX_ORDERS] = {0};
+
+    for (int i = 0; i < size; i++) {
+        total_pizzas += orders[i].quantity;
+        if (!used_orders[orders[i].order_id]) {
+            used_orders[orders[i].order_id] = 1;
+            unique_orders++;
+        }
+    }
+    float avg = unique_orders > 0 ? (float)total_pizzas / unique_orders : 0;
+    snprintf(resultado, MAX_STRING, "%.2f pizzas/orden", avg);
+    return resultado;
+}
+
+char* promedio_pizzas_por_dia(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int total_pizzas = 0;
+    int unique_dates = 0;
+    char used_dates[MAX_ORDERS][MAX_STRING] = {0};
+
+    for (int i = 0; i < size; i++) {
+        total_pizzas += orders[i].quantity;
+        int found = 0;
+        for (int j = 0; j < unique_dates; j++) {
+            if (strcmp(orders[i].order_date, used_dates[j]) == 0) {
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            strncpy(used_dates[unique_dates], orders[i].order_date, MAX_STRING);
+            unique_dates++;
+        }
+    }
+    float avg = unique_dates > 0 ? (float)total_pizzas / unique_dates : 0;
+    snprintf(resultado, MAX_STRING, "%.2f pizzas/día", avg);
+    return resultado;
+}
+
+char* ingrediente_mas_vendido(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int contador[256] = {0};
+
+    for (int i = 0; i < size; i++) {
+        contar_ingredientes(orders[i].pizza_ingredients, contador);
+    }
+
+    int max_count = 0;
+    char max_ingredient = '\0';
+    for (int i = 0; i < 256; i++) {
+        if (contador[i] > max_count) {
+            max_count = contador[i];
+            max_ingredient = (char)i;
+        }
+    }
+    snprintf(resultado, MAX_STRING, "'%c' (%d usos)", max_ingredient, max_count);
+    return resultado;
+}
+
+char* cantidad_pizzas_por_categoria(int size, Order *orders) {
+    static char resultado[MAX_STRING];
+    int classic = 0, veggie = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (strcmp(orders[i].pizza_category, "Classic") == 0) {
+            classic += orders[i].quantity;
+        } else if (strcmp(orders[i].pizza_category, "Veggie") == 0) {
+            veggie += orders[i].quantity;
+        }
+    }
+    snprintf(resultado, MAX_STRING, "Clásicas: %d | Vegetarianas: %d", classic, veggie);
+    return resultado;
+}
