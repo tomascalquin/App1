@@ -3,7 +3,18 @@ Integrantes: Benjamin Pacheco, Tomas Calquin.
 
 Estructura del Programa:
 
+1.- Definicion de librerias y constantes para eñ uso de mnemoria
+2.- Estructuración de los datos que se verán en el csv
+3.- Funciones principales (leer csv, generar reportes y liberar memoria)
+4.- Funciones metricas para categorias en el csv 
+5.- Manejo de memoria
+
 Flujo de Ejecución:
+
+1.- Inicio del programa y subida del csv
+2.- Generación de reporte 
+3.- Salida de resultados
+4.- Limpieza de memoria y finalización
 
 Dificultades Encontradas:
 
