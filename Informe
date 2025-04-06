@@ -16,6 +16,9 @@ Flujo de Ejecución:
 3.- Salida de resultados
 4.- Limpieza de memoria y finalización
 
+Los punteros se usan para que las variables sean guardados en la memoria dinamica y el csv es leido linea a lineaa por el codigo
+para generar el reporte en base a la estructura previamente creada
+
 Dificultades Encontradas:
 
 Falta de experiencia con github y programación en c en general
