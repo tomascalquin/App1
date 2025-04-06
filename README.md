@@ -2,7 +2,7 @@
 
 ## **Integrantes**
 - **Tomas Calquín** <br>
-  <loreto.arriagada.v@edu.uai.cl>
+  <tcalquin@alumnos.uai.cl>
 
 - **Benjamín Pacheco** <br>
   <benpacheco@alumnos.uai.cl>
